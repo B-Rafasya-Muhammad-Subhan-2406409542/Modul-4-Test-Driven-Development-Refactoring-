@@ -1,6 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.controller;
 import id.ac.ui.cs.advprog.eshop.model.Car;
-import id.ac.ui.cs.advprog.eshop.service.CarServiceImpl;
+import id.ac.ui.cs.advprog.eshop.service.CarService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,8 @@ import java.util.List;
 @RequestMapping("/car")
 @RequiredArgsConstructor
 class CarController extends ProductController {
-    private final CarServiceImpl carservice;
-    private static final String REDIRECT_CARLIST = "redirect:listcar";
+    private final CarService carservice;
+    private static final String REDIRECT_CARLIST = "redirect:listCar";
 
     @GetMapping("/createCar")
     public String createCarPage(Model model) {
