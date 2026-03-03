@@ -105,7 +105,7 @@ class ProductRepositoryTest {
         product.setProductQuantity(100);
         productRepository.create(product);
 
-        productRepository.delete(product.getProductId());
+        productRepository.deleteById(product.getProductId());
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
@@ -113,7 +113,7 @@ class ProductRepositoryTest {
 
     @Test
     void testDeleteProductNotFound() {
-        productRepository.delete("random-id");
+        productRepository.deleteById("random-id");
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
@@ -187,7 +187,7 @@ class ProductRepositoryTest {
         product1.setProductQuantity(100);
         productRepository.create(product1);
 
-        productRepository.delete("id-ngasal-tidak-ada");
+        productRepository.deleteById("id-ngasal-tidak-ada");
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertTrue(productIterator.hasNext());

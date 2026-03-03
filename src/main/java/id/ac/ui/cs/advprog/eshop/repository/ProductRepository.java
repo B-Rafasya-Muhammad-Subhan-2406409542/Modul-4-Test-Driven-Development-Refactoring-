@@ -45,7 +45,7 @@ public class ProductRepository {
         return null;
     }
 
-    public void delete(String id) {
+    public void deleteById(String id) {
         productData.removeIf(product -> product.getProductId().equals(id));
     }
 }

@@ -9,7 +9,6 @@ import java.util.UUID;
 @Repository
 public class CarRepository {
 
-    static int id = 0;
     private List<Car> carData = new ArrayList<>();
 
     public Car create(Car car) {
@@ -47,7 +46,7 @@ public class CarRepository {
         return null;
     }
 
-    public void delete(String id) {
+    public void deleteCarById(String id) {
         carData.removeIf(car -> car.getCarId().equals(id));
     }
 }
