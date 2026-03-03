@@ -2,7 +2,7 @@ package id.ac.ui.cs.advprog.eshop.controller;
 import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.service.CarServiceImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/car")
+@RequiredArgsConstructor
 class CarController extends ProductController {
-
-    @Autowired
-    private CarServiceImpl carservice;
+    private final CarServiceImpl carservice;
     private static final String REDIRECT_CARLIST = "redirect:listcar";
 
     @GetMapping("/createCar")
