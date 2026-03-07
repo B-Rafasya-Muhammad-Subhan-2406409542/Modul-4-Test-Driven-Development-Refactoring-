@@ -137,7 +137,7 @@ public class OrderServiceImplTest {
         doReturn(new ArrayList<Order>()).when(orderRepository)
                 .findAllByAuthor(order.getAuthor().toLowerCase());
 
-        List<Order> results = orderService.findAllByAuhtor(
+        List<Order> results = orderService.findAllByAuthor(
                 order.getAuthor().toLowerCase());
         assertTrue(results.isEmpty());
     }
