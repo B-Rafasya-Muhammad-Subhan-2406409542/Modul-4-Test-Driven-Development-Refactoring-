@@ -110,3 +110,20 @@ Saya juga telah membuat file `Dockerfile` dan menyiapkan mekanisme *pull-based d
 * **Sistem yang Kaku**: Jika saya tidak menerapkan DIP dan tetap membiarkan `CarController` bergantung pada `CarServiceImpl` (kelas konkret), sistem akan sangat kaku. Jika sewaktu-waktu konstruktor dari `CarServiceImpl` berubah, saya harus ikut mengubah kode di dalam `CarController`.
 * **Risiko Kerusakan Skala Besar**: Mengabaikan SRP dan menggabungkan semua logika (mobil dan produk) ke dalam satu kelas raksasa akan menciptakan *God Object*. Jika saya memodifikasi fitur produk di dalam kelas tersebut, ada kemungkinan saya tanpa sengaja merusak fitur mobil yang sebelumnya berjalan normal.
 * **Sulit Dikembangkan**: Tanpa penerapan OCP, menambahkan varian implementasi baru berarti saya harus mengedit atau menambahkan blok `if-else` panjang di dalam kelas *service* atau *controller* yang sudah ada. Mengubah kode yang sudah stabil di sistem *production* memiliki risiko tinggi untuk menimbulkan *bug* baru.
+
+## Reflection 4
+### 1. Evaluasi Alur TDD
+Menurut saya, setelah menerapkan alur TDD untuk fitur Order dan OrderRepository di exercise ini, metode ini terbukti sangat berguna. Dengan bikin tesnya duluan (fase RED), saya jadi dipaksa mikirin kemungkinan error (kayak pas keranjang kosong atau input statusnya ngasal) sebelum nulis kode aslinya. Waktu nulis kode (fase GREEN) juga jadi lebih terarah. Selain itu, pas bagian merapikan kode (fase REFACTOR) kayak waktu ganti string status pakai Enum, saya merasa sangat aman karena ada tes yang bakal langsung ngasih tahu kalau kodenya malah jadi rusak.
+
+### 2. Evaluasi Prinsip FIRST
+Secara keseluruhan, unit test yang udah saya buat di bagian Tutorial udah sukses ngikutin prinsip F.I.R.S.T.:
+
+* **Fast**: Tesnya jalan sangat cepat karena dibantu Mockito, jadi tidak perlu menunggu koneksi ke database beneran.
+
+* **Independent**: Tiap tes berdiri sendiri. Saya pakai @BeforeEach buat nge-reset data, jadi hasil tes satu ngga bakal ngerusak atau ngaruh ke tes yang lain.
+
+* **Repeatable**: Bisa dijalanin berkali-kali di environment mana aja dan hasilnya bakal tetap konsisten.
+
+* **Self-Validating**: Udah pakai fungsi bawaan kayak assertEquals dan verify, jadi otomatis ketahuan hijau (pass) atau merah (fail) tanpa perlu dicek secara manual.
+
+* **Timely**: Tesnya dibuat tepat waktu karena dikerjakan berbarengan sejalan sama pembuatan fitur Service dan Controller-nya.
