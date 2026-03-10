@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.controller;
 
 import id.ac.ui.cs.advprog.eshop.model.Order;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,19 +33,26 @@ class OrderControllerTest {
 
     @BeforeEach
     void setUp() {
-        order = new Order("order-1", new ArrayList<>(), 123456789L, "Rafasya");
+        List<Product> products = new ArrayList<>();
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(2);
+        products.add(product);
+
+        order = new Order("order-1", products, 123456789L, "Rafasya");
     }
 
     @Test
     void testCreateOrderPage() {
         String viewName = orderController.createOrderPage();
-        assertEquals("createOrder", viewName);
+        assertEquals("CreateOrder", viewName);
     }
 
     @Test
     void testHistoryOrderPage() {
         String viewName = orderController.historyOrderPage();
-        assertEquals("orderHistory", viewName);
+        assertEquals("OrderHistory", viewName);
     }
 
     @Test
@@ -57,7 +65,7 @@ class OrderControllerTest {
 
         verify(model).addAttribute("orders", orders);
         verify(model).addAttribute("author", "Rafasya");
-        assertEquals("orderList", viewName);
+        assertEquals("OrderList", viewName);
     }
 
     @Test
@@ -65,13 +73,13 @@ class OrderControllerTest {
         when(orderService.findById("order-1")).thenReturn(order);
         String viewName = orderController.payOrderPage("order-1", model);
         verify(model).addAttribute("order", order);
-        assertEquals("paymentOrder", viewName);
+        assertEquals("PaymentOrder", viewName);
     }
 
     @Test
     void testPayOrderPost() {
         String viewName = orderController.payOrder("order-1", model);
         verify(model).addAttribute(eq("paymentId"), anyString());
-        assertEquals("paymentSuccess", viewName);
+        assertEquals("PaymentSuccess", viewName);
     }
 }
