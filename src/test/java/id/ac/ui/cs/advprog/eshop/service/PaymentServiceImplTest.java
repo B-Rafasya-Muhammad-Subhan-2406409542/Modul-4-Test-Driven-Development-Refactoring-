@@ -60,4 +60,56 @@ class PaymentServiceImplTest {
         assertEquals("SUCCESS", result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
+
+    @Test
+    void testAddPaymentVoucherSuccess() {
+        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment = new Payment("payment-2", "VOUCHER_CODE", order, paymentData);
+
+        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
+
+        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
+
+        assertNotNull(result);
+        assertEquals("SUCCESS", result.getStatus());
+        verify(paymentRepository, times(1)).save(any(Payment.class));
+    }
+
+    @Test
+    void testSetStatusSuccess() {
+        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment = new Payment("payment-3", "VOUCHER_CODE", order, paymentData);
+
+        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
+
+        Payment result = paymentService.setStatus(payment, "REJECTED");
+
+        assertNotNull(result);
+        assertEquals("REJECTED", result.getStatus());
+        verify(paymentRepository, times(1)).save(any(Payment.class));
+    }
+
+    @Test
+    void testGetPaymentSuccess() {
+        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment = new Payment("payment-4", "VOUCHER_CODE", order, paymentData);
+
+        when(paymentRepository.findById("payment-4")).thenReturn(payment);
+
+        Payment result = paymentService.getPayment("payment-4");
+
+        assertNotNull(result);
+        assertEquals(payment.getId(), result.getId());
+        verify(paymentRepository, times(1)).findById("payment-4");
+    }
+
+    @Test
+    void testGetPaymentNotFound() {
+        when(paymentRepository.findById("invalid-id")).thenReturn(null);
+
+        Payment result = paymentService.getPayment("invalid-id");
+
+        assertNull(result);
+        verify(paymentRepository, times(1)).findById("invalid-id");
+    }
 }
