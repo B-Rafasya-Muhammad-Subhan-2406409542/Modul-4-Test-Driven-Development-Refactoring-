@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
@@ -29,14 +30,14 @@ class PaymentTest {
     void testCreatePaymentVoucherCodeSuccess() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("payment-1", "VOUCHER_CODE", order, paymentData);
-        assertEquals("SUCCESS", payment.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
     void testCreatePaymentVoucherCodeRejected() {
         paymentData.put("voucherCode", "ESHOP1234");
         Payment payment = new Payment("payment-2", "VOUCHER_CODE", order, paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
@@ -44,7 +45,7 @@ class PaymentTest {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "REF123456789");
         Payment payment = new Payment("payment-3", "BANK_TRANSFER", order, paymentData);
-        assertEquals("SUCCESS", payment.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
@@ -52,7 +53,7 @@ class PaymentTest {
         paymentData.put("bankName", "");
         paymentData.put("referenceCode", "REF123456789");
         Payment payment = new Payment("payment-4", "BANK_TRANSFER", order, paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
@@ -60,23 +61,23 @@ class PaymentTest {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "");
         Payment payment = new Payment("payment-5", "BANK_TRANSFER", order, paymentData);
-        assertEquals("REJECTED", payment.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
     void testSetStatusToSuccess() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("payment-1", "VOUCHER_CODE", order, paymentData);
-        payment.setStatus("SUCCESS");
-        assertEquals("SUCCESS", payment.getStatus());
+        payment.setStatus(PaymentStatus.SUCCESS.getValue());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
     void testSetStatusToRejected() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
         Payment payment = new Payment("payment-1", "VOUCHER_CODE", order, paymentData);
-        payment.setStatus("REJECTED");
-        assertEquals("REJECTED", payment.getStatus());
+        payment.setStatus(PaymentStatus.REJECTED.getValue());
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 
     @Test
@@ -85,15 +86,15 @@ class PaymentTest {
         Payment payment = new Payment("payment-1", "VOUCHER_CODE", order, paymentData);
 
         assertThrows(IllegalArgumentException.class, () -> {
-            payment.setStatus("PENDING");
+            payment.setStatus(PaymentStatus.PENDING.getValue());
         });
     }
 
     @Test
     void testCreatePaymentWithSpecificStatusSuccess() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("payment-1", "VOUCHER_CODE", order, paymentData, "SUCCESS");
-        assertEquals("SUCCESS", payment.getStatus());
+        Payment payment = new Payment("payment-1", "VOUCHER_CODE", order, paymentData, PaymentStatus.SUCCESS.getValue());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
