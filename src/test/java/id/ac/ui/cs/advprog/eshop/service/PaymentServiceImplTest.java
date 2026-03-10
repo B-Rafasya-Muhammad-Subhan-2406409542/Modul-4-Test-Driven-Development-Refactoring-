@@ -34,7 +34,6 @@ class PaymentServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Buat dummy product agar list tidak null / kosong
         List<Product> products = new ArrayList<>();
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -42,7 +41,6 @@ class PaymentServiceImplTest {
         product.setProductQuantity(2);
         products.add(product);
 
-        // Masukkan list products ke dalam order
         order = new Order("order-1", products, 1708560000L, "Safira");
         paymentData = new HashMap<>();
     }
