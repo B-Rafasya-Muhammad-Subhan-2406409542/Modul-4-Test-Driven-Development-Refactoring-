@@ -6,6 +6,7 @@ import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -111,5 +112,37 @@ class PaymentServiceImplTest {
 
         assertNull(result);
         verify(paymentRepository, times(1)).findById("invalid-id");
+    }
+
+    @Test
+    void testSetStatusToSuccessUpdatesOrderStatusToSuccess() {
+        paymentData.put("bankName", "BCA");
+        paymentData.put("referenceCode", "REF12345");
+        Payment payment = new Payment("payment-3", PaymentMethod.BANK_TRANSFER.getValue(), order, paymentData);
+
+        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
+
+        Payment result = paymentService.setStatus(payment, PaymentStatus.SUCCESS.getValue());
+
+        assertNotNull(result);
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
+        assertEquals(OrderStatus.SUCCESS.getValue(), result.getOrder().getStatus());
+        verify(paymentRepository, times(1)).save(any(Payment.class));
+    }
+
+    @Test
+    void testSetStatusToRejectedUpdatesOrderStatusToFailed() {
+        paymentData.put("bankName", "BCA");
+        paymentData.put("referenceCode", "REF12345");
+        Payment payment = new Payment("payment-4", PaymentMethod.BANK_TRANSFER.getValue(), order, paymentData);
+
+        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
+
+        Payment result = paymentService.setStatus(payment, PaymentStatus.REJECTED.getValue());
+
+        assertNotNull(result);
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
+        assertEquals(OrderStatus.FAILED.getValue(), result.getOrder().getStatus());
+        verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 }
