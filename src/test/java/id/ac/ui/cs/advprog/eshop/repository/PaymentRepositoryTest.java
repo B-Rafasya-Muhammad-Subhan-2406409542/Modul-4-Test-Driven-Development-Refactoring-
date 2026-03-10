@@ -58,4 +58,31 @@ class PaymentRepositoryTest {
         Payment foundPayment = paymentRepository.findById("invalid-id");
         assertNull(foundPayment);
     }
+
+    @Test
+    void testFindAll() {
+        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment1 = new Payment("payment-1", "VOUCHER_CODE", order, paymentData);
+        paymentRepository.save(payment1);
+
+        Map<String, String> paymentData2 = new HashMap<>();
+        paymentData2.put("bankName", "BCA");
+        paymentData2.put("referenceCode", "REF12345");
+        Payment payment2 = new Payment("payment-2", "BANK_TRANSFER", order, paymentData2);
+        paymentRepository.save(payment2);
+
+        List<Payment> paymentList = paymentRepository.findAll();
+        assertEquals(2, paymentList.size());
+        assertTrue(paymentList.contains(payment1));
+        assertTrue(paymentList.contains(payment2));
+    }
+
+    @Test
+    void testFindAllIfEmpty() {
+        List<Payment> paymentList = paymentRepository.findAll();
+
+        assertNotNull(paymentList);
+        assertTrue(paymentList.isEmpty());
+        assertEquals(0, paymentList.size());
+    }
 }
