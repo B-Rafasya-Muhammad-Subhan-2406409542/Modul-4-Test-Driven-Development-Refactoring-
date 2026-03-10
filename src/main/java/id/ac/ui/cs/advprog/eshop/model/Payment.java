@@ -45,10 +45,6 @@ public class Payment {
     }
 
     public void setStatus(String status) {
-        if ("SUCCESS".equals(status) || "REJECTED".equals(status)) {
-            this.status = status;
-        } else {
-            throw new IllegalArgumentException();
-        }
+        this.status = status;
     }
 }
