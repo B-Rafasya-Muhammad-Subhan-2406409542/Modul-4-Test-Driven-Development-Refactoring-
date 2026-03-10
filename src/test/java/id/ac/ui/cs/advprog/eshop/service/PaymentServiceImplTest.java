@@ -4,6 +4,8 @@ import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,48 +51,48 @@ class PaymentServiceImplTest {
     void testAddPaymentBankTransferSuccess() {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "REF12345");
-        Payment payment = new Payment("payment-1", "BANK_TRANSFER", order, paymentData);
+        Payment payment = new Payment("payment-1", PaymentMethod.BANK_TRANSFER.getValue(), order, paymentData);
 
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
-        Payment result = paymentService.addPayment(order, "BANK_TRANSFER", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
 
-        assertEquals("SUCCESS", result.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testAddPaymentVoucherSuccess() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("payment-2", "VOUCHER_CODE", order, paymentData);
+        Payment payment = new Payment("payment-2", PaymentMethod.VOUCHER_CODE.getValue(), order, paymentData);
 
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
-        Payment result = paymentService.addPayment(order, "VOUCHER_CODE", paymentData);
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER_CODE.getValue(), paymentData);
 
         assertNotNull(result);
-        assertEquals("SUCCESS", result.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testSetStatusSuccess() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("payment-3", "VOUCHER_CODE", order, paymentData);
+        Payment payment = new Payment("payment-3", PaymentMethod.VOUCHER_CODE.getValue(), order, paymentData);
 
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
 
-        Payment result = paymentService.setStatus(payment, "REJECTED");
+        Payment result = paymentService.setStatus(payment, PaymentStatus.REJECTED.getValue());
 
         assertNotNull(result);
-        assertEquals("REJECTED", result.getStatus());
+        assertEquals(PaymentStatus.REJECTED.getValue(), result.getStatus());
         verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testGetPaymentSuccess() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("payment-4", "VOUCHER_CODE", order, paymentData);
+        Payment payment = new Payment("payment-4", PaymentMethod.VOUCHER_CODE.getValue(), order, paymentData);
 
         when(paymentRepository.findById("payment-4")).thenReturn(payment);
 
