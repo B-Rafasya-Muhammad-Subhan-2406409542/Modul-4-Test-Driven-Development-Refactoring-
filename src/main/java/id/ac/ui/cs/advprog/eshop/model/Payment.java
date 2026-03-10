@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import lombok.Getter;
 import java.util.Map;
 
@@ -20,14 +21,14 @@ public class Payment {
 
         boolean valid = false;
 
-        if ("VOUCHER_CODE".equals(method)) {
+        if (PaymentMethod.VOUCHER_CODE.getValue().equals(method)) {
             String voucher = paymentData.get("voucherCode");
             if (voucher != null && voucher.length() == 16 && voucher.startsWith("ESHOP")) {
                 long numCount = voucher.chars().filter(Character::isDigit).count();
                 if (numCount == 8) valid = true;
             }
         }
-        else if ("BANK_TRANSFER".equals(method)) {
+        else if (PaymentMethod.BANK_TRANSFER.getValue().equals(method)) {
             String bankName = paymentData.get("bankName");
             String refCode = paymentData.get("referenceCode");
 
